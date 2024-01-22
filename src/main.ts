@@ -24,8 +24,7 @@ function objToTriangles(
   translation: Point3 = new Point3(0, 0, 0),
   resize: number = 1
 ): Array<Triangle> {
-  const triangles = [];
-  for (const face of model.faces) {
+  const triangles = model.faces.map((face) => {
     const vertices = face.vertices.map(
       (vertex) => model.vertices[vertex.vertexIndex - 1]
     );
@@ -33,13 +32,8 @@ function objToTriangles(
       (vertex) => model.vertexNormals[vertex.vertexNormalIndex - 1]
     );
 
-    const validVertices = vertices.map(
-      (vtx) =>
-        new Vec3(
-          (vtx.x + translation?.x()) * resize,
-          (vtx.y + translation?.y()) * resize,
-          (vtx.z + translation?.z()) * resize
-        )
+    const validVertices = vertices.map((vtx) =>
+      new Vec3(vtx.x, vtx.y, vtx.z).add(translation).scale(resize)
     );
 
     let validVerticesNormals = undefined;
@@ -56,8 +50,9 @@ function objToTriangles(
       validVerticesNormals
     );
 
-    triangles.push(triangle);
-  }
+    return triangle;
+  });
+
   return triangles;
 }
 
