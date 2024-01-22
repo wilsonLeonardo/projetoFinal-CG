@@ -10,12 +10,12 @@ A cena é composta por 4 objetos, sendo eles: 3 esferas (1 sendo o chão) e um c
 
 As configurações da camera da cena definidas e usadas no projeto seguem abaixo:
 
-Largura : 400px
-Altura : 225px 
-Proporção da tela : 16/9
-Amostras por pixels : 100
-Profundidade máxima : 50
-Quadros por segundo : 24
+- Largura : 400px
+- Altura : 225px 
+- Proporção da tela : 16/9
+- Amostras por pixels : 100
+- Profundidade máxima : 50
+- Quadros por segundo : 24
 
 ## Como Executar
 
