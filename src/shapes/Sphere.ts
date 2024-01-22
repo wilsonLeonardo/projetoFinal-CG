@@ -1,8 +1,8 @@
-import { Interval } from 'src/utils/Interval';
-import { HitRecord, Hittable } from '../utils/Hittable';
-import { Point3, Ray } from '../utils/Ray';
-import { Vec3, dot } from '../vec/vec3';
-import { Material } from 'src/utils/Material';
+import { Interval } from "src/utils/Interval";
+import { HitRecord, Hittable } from "../utils/Hittable";
+import { Point3, Ray } from "../utils/Ray";
+import { Vec3, dot } from "../vec/vec3";
+import { Material } from "src/utils/Material";
 
 export default class Sphere implements Hittable {
   private center: Point3;
@@ -40,5 +40,11 @@ export default class Sphere implements Hittable {
     rec.mat = this.mat;
 
     return { objectHit: true, rec };
+  }
+  translate(vec: Point3) {
+    this.center = this.center.add(vec);
+  }
+  getCenter(): Point3 {
+    return this.center;
   }
 }

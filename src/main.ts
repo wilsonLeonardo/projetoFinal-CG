@@ -80,6 +80,22 @@ export function main() {
 
   const model = readObject("src/obj/cube.obj");
 
+  const translate_direction1 = new Point3(0, 0.2, 0);
+  const translate_direction2 = new Point3(0, -0.2, 0);
+  let toUp = true;
+
+  world.add(new Sphere(new Point3(0.0, -100.5, -1.0), 100.0, material_ground));
+  const translate = new Point3(-1, -3, -1.2);
+
+  objToTriangles(model, material_center, translate, 0.8).forEach((shapes) => {
+    world.add(shapes);
+  });
+
+  const sphere1 = new Sphere(new Point3(2, 0.0, -1), 0.5, material_left);
+  const sphere2 = new Sphere(new Point3(-2, 0.0, 1), 0.5, material_right);
+  world.add(sphere1);
+  world.add(sphere2);
+
   const cam = new Camera();
 
   cam.aspectRatio = 16.0 / 9.0;
@@ -91,46 +107,22 @@ export function main() {
   cam.lookAt = new Point3(0, 0, 0);
   cam.vup = new Vec3(0, 1, 0);
 
-  let vec_sphere1 = new Point3(2, 0.0, -1);
-  let vec_sphere2 = new Point3(-2, 0.0, 1);
-  const translate_direction1 = new Point3(0, 0.2, 0);
-  const translate_direction2 = new Point3(0, -0.2, 0);
-  let toUp = true;
-
-  const fps = 20;
+  const fps = 28;
   const animation_duration = 5;
 
   for (let i = 0; i < fps * animation_duration; i++) {
-    world.add(
-      new Sphere(new Point3(0.0, -100.5, -1.0), 100.0, material_ground)
-    );
-    const translate = new Point3(-1, -3, -1.2);
-
-    objToTriangles(model, material_center, translate, 0.8).forEach((shapes) => {
-      world.add(shapes);
-    });
-
-    world.add(new Sphere(vec_sphere1, 0.5, material_left));
-    world.add(new Sphere(vec_sphere2, 0.5, material_right));
-
-    if (Math.round(vec_sphere1.y()) == 3) {
+    if (Math.round(sphere1.getCenter().y()) == 3) {
       toUp = false;
-    } else if (vec_sphere1.y() <= 0.1) {
+    } else if (sphere1.getCenter().y() <= 0.1) {
       toUp = true;
     }
     if (i > fps) {
-      vec_sphere1 = vec_sphere1.add(
-        toUp ? translate_direction1 : translate_direction2
-      );
-      vec_sphere2 = vec_sphere2.add(
-        toUp ? translate_direction1 : translate_direction2
-      );
+      sphere1.translate(toUp ? translate_direction1 : translate_direction2);
+      sphere2.translate(toUp ? translate_direction1 : translate_direction2);
     }
 
     cam.render(`world-${i}`, world);
 
     cam.lookFrom = cam.lookFrom.rotate("y", 5);
-
-    world.clear();
   }
 }
